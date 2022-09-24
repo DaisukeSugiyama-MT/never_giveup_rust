@@ -12,12 +12,16 @@ trait Dialog {
 struct AlertDialog {
     title: String,
     message: String,
+    error_no: i32,
 }
 
 // ダイアログトレイトの実装(アラートダイアログ)
 impl Dialog for AlertDialog {
     fn show(&self) {
-        println!("[Alert!]{}: {}", self.title, self.message);
+        println!(
+            "[Alert!]{}: error No.{} / {}",
+            self.title, self.error_no, self.message
+        );
     }
 }
 
@@ -39,6 +43,7 @@ fn main() {
     let alert = AlertDialog {
         title: "Alert".to_string(),
         message: "Alert Message".to_string(),
+        error_no: 1,
     };
     let info = InfoDialog {
         title: "Info".to_string(),
