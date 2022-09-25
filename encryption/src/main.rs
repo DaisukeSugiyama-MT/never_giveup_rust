@@ -1,28 +1,47 @@
 mod encryption;
 
+use std::fmt::Error;
+
 use encryption::encryption;
-fn main() {
+fn main() -> Result<(), std::fmt::Error> {
     let args: Vec<String> = std::env::args().collect();
-    let user_id = &args[1];
+    let solt = &args[1];
     let password_str = &args[2];
 
-    // 1. user_idをハッシュ化
-    let mut user_id_hash = encryption(user_id);
-
-    // 2.stretching
-    for _n in 0..100000 {
-        user_id_hash = encryption(&user_id_hash);
+    if solt.len() <= 16 {
+        println!("[error] solt is not 16 characters");
+        return Err(*Box::new(Error));
+    }
+    if password_str.len() < 8 {
+        println!("[error] password is not 8 characters");
+        return Err(*Box::new(Error));
     }
 
-    // 前後にsolt付ける
-    let mut password_with_solt = String::from(password_str) + &user_id_hash;
-    password_with_solt = String::from(&user_id_hash) + &password_with_solt;
+    // 1.soltを結合
+    let password_with_solt = String::from(password_str) + &solt;
 
-    // 3. passwordをハッシュ化
+    // 2. passwordをハッシュ化
     let mut hash = encryption(&password_with_solt);
-    // stretching
+
+    // 3.stretching
     for _n in 0..100000 {
         hash = encryption(&hash);
     }
-    println!("hash is: {}", hash);
+    println!("hash is:{}", hash);
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_encryption() {
+        let password = "password";
+        let hash = encryption(password);
+        assert_eq!(
+            hash,
+            "c0067d4af4e87f00dbac63b6156828237059172d1bbeac67427345d6a9fda484"
+        );
+    }
 }
