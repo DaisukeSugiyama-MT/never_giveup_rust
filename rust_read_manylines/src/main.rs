@@ -4,6 +4,8 @@ use std::{
 };
 
 fn main() {
+    //write_file(10000000);
+
     // 引数を取得
     let args: Vec<String> = std::env::args().collect();
     // 引数がなければ終了
@@ -11,7 +13,6 @@ fn main() {
         println!("Usage: {} [file]", args[0]);
         return;
     }
-
     // pathを取得
     let path = &args[1];
 
@@ -24,7 +25,7 @@ fn main() {
     let reader = BufReader::new(file);
     // ループ
     for line in reader.lines() {
-        line.unwrap();
+        //line.unwrap();
         count += 1;
     }
     // 時間計測終了
@@ -37,7 +38,7 @@ fn write_file(line_count: usize) {
     let path = "test.txt";
     let mut file = File::create(path).unwrap();
 
-    let s: String = format!("{}\r", "rust,samplelogs,hello,world!").repeat(line_count);
+    let s: String = format!("{}\n", "rust,samplelogs,hello,world!").repeat(line_count);
 
     file.write_all(s.as_bytes()).unwrap();
 }
