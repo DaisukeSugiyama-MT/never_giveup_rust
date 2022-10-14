@@ -13,3 +13,6 @@ Cargo.lock
 **/*/*.pdb
 
 **/target
+
+// 容量の大きいテストファイルを除外
+test.txt

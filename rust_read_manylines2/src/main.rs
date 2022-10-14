@@ -1,6 +1,8 @@
 use std::{fs::File, io::Write};
 
 fn main() {
+    //write_file(10000000);
+
     // 引数を取得
     let args: Vec<String> = std::env::args().collect();
     // 引数が足りない場合はエラーを出力して終了
@@ -12,7 +14,6 @@ fn main() {
     // 引数からファイルパスを取得
     let path = &args[1];
 
-    //write_file(10000000);
     // 時間計測開始
     let start = std::time::Instant::now();
 
@@ -25,13 +26,15 @@ fn main() {
     let mut count = 0;
     // ファイルの内容を出力
     for line in lines {
+        // 文字列を逆順にする
+        let rev = line.chars().rev().collect::<String>();
         //println!("{}", line);
-        count += 1;
+        //count += 1;
     }
 
     // 時間計測終了
     let end = start.elapsed();
-    println!("{}行を出力しました. {:?}", count, end);
+    println!("{}.{:03}秒", end.as_secs(), end.subsec_millis());
 }
 
 // 指定行数のファイルを作成
